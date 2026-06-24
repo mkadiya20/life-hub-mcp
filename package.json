@@ -1,25 +1,31 @@
 {
-  "name": "remote-mcp-server-authless",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
-    "format": "oxfmt --write .",
-    "lint:fix": "oxlint --fix",
-    "start": "wrangler dev",
-    "cf-typegen": "wrangler types",
-    "type-check": "tsc --noEmit"
-  },
-  "dependencies": {
-    "agents": "^0.16.0",
-    "zod": "^4.4.3"
-  },
-  "devDependencies": {
-    "@types/node": "^26.0.0",
-    "oxfmt": "^0.54.0",
-    "oxlint": "^1.69.0",
-    "typescript": "6.0.3",
-    "wrangler": "^4.104.0"
-  }
+	"name": "life-hub-mcp",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev",
+		"start": "wrangler dev",
+		"cf-typegen": "wrangler types",
+		"lint": "oxlint",
+		"lint:fix": "oxlint --fix",
+		"format": "oxfmt --write .",
+		"format:check": "oxfmt --check .",
+		"type-check": "tsc --noEmit",
+		"check": "npm run lint && npm run format:check && npm run type-check",
+		"prepare": "lefthook install"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.29.0",
+		"agents": "^0.16.0",
+		"zod": "^4.4.3"
+	},
+	"devDependencies": {
+		"@types/node": "^26.0.0",
+		"lefthook": "^1.13.6",
+		"oxfmt": "^0.54.0",
+		"oxlint": "^1.69.0",
+		"typescript": "6.0.3",
+		"wrangler": "^4.104.0"
+	}
 }

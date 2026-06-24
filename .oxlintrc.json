@@ -1,6 +1,6 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
-	"plugins": ["typescript", "react"],
+	"plugins": ["typescript"],
 	"categories": {
 		"correctness": "error",
 		"suspicious": "warn",
@@ -17,7 +17,6 @@
 			}
 		],
 		"no-await-in-loop": "off",
-		"react/react-in-jsx-scope": "off",
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-explicit-any": "off",
 		"no-shadow": "off"

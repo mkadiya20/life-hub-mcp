@@ -1,0 +1,17 @@
+# https://lefthook.dev
+# Runs fast checks before each commit. Hooks are installed via the package.json
+# `prepare` script (`lefthook install`), which npm runs automatically on install.
+pre-commit:
+  parallel: true
+  jobs:
+    - name: lint
+      glob: "*.{ts,tsx,js,jsx}"
+      run: npx oxlint {staged_files}
+
+    - name: format
+      glob: "*.{ts,tsx,js,jsx,json,jsonc}"
+      run: npx oxfmt --check {staged_files}
+
+    - name: type-check
+      glob: "*.{ts,tsx}"
+      run: npm run type-check

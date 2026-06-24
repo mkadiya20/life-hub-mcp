@@ -1,5 +1,28 @@
 {
 	"files.associations": {
 		"wrangler.json": "jsonc"
+	},
+	"editor.tabSize": 2,
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"editor.formatOnSave": true,
+	"editor.formatOnSaveMode": "file",
+	"editor.defaultFormatter": "oxc.oxc-vscode",
+	"editor.codeActionsOnSave": {
+		"source.fixAll.oxc": "explicit"
+	},
+	"oxc.enable.oxfmt": true,
+	"oxc.enable.oxlint": true,
+	"[typescript]": {
+		"editor.defaultFormatter": "oxc.oxc-vscode"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "oxc.oxc-vscode"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "oxc.oxc-vscode"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "oxc.oxc-vscode"
 	}
 }
