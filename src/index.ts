@@ -1,7 +1,9 @@
+import OAuthProvider from "@cloudflare/workers-oauth-provider";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { McpAgent } from "agents/mcp";
 import { z } from "zod";
 import { createNutritionEntry, type EntryType, keyFromStem } from "./entry";
+import { GitHubHandler } from "./github-handler";
 import {
 	applyNutritionEdit,
 	dailyTotals,
@@ -9,6 +11,7 @@ import {
 	logMealInput,
 	toNutritionBody,
 } from "./nutrition";
+import type { Props } from "./oauth-utils";
 import { deleteEntry, getEntry, listEntries, putEntry } from "./store";
 
 const NUTRITION: EntryType = "nutrition-entry";
@@ -19,17 +22,25 @@ const json = (data: unknown) => ({
 const entryTypeSchema = z.enum(["nutrition-entry"]);
 const dateArg = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "date must be YYYY-MM-DD");
 
-export class MyMCP extends McpAgent {
+// Only these GitHub logins may use the server at all. Single-user: add your username.
+const ALLOWED_USERNAMES = new Set<string>(["mkadiya20"]);
+
+export class MyMCP extends McpAgent<Env, Record<string, never>, Props> {
 	server = new McpServer({
 		name: "Life Hub",
 		version: "0.1.0",
 	});
 
 	private get bucket(): R2Bucket {
-		return (this.env as Env).BUCKET;
+		return this.env.BUCKET;
 	}
 
 	async init() {
+		// Fail closed: an authenticated-but-unlisted user gets no tools.
+		if (!ALLOWED_USERNAMES.has(this.props!.login)) {
+			return;
+		}
+
 		this.server.registerTool(
 			"log_meal",
 			{
@@ -137,14 +148,11 @@ export class MyMCP extends McpAgent {
 	}
 }
 
-export default {
-	fetch(request: Request, env: Env, ctx: ExecutionContext) {
-		const url = new URL(request.url);
-
-		if (url.pathname === "/mcp") {
-			return MyMCP.serve("/mcp").fetch(request, env, ctx);
-		}
-
-		return new Response("Not found", { status: 404 });
-	},
-};
+export default new OAuthProvider({
+	apiHandler: MyMCP.serve("/mcp") as never,
+	apiRoute: "/mcp",
+	authorizeEndpoint: "/authorize",
+	clientRegistrationEndpoint: "/register",
+	defaultHandler: GitHubHandler as never,
+	tokenEndpoint: "/token",
+});

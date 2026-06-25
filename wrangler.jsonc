@@ -28,6 +28,12 @@
 			"bucket_name": "life-hub",
 		},
 	],
+	"kv_namespaces": [
+		{
+			"binding": "OAUTH_KV",
+			"id": "1df9825c38fa4551b034fc5beb205874",
+		},
+	],
 	"observability": {
 		"enabled": true,
 	},
