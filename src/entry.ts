@@ -1,7 +1,6 @@
 /**
- * Shared envelope + typed body. Every entry is a markdown file:
- * YAML frontmatter + a short human-readable body. The envelope is
- * identical across types; the body is owned by a per-type adapter.
+ * Shared envelope + typed body. Every entry is a markdown file (YAML frontmatter + body
+ * line); the envelope is common to all types, the body owned by a per-type adapter.
  */
 import { parse, stringify } from "yaml";
 import { ulid } from "ulid";
@@ -49,10 +48,7 @@ export function entryKey(type: EntryType, date: string, stem: string): string {
 	return `${folder}/entries/${date}/${stem}.md`;
 }
 
-/**
- * Reconstruct the full R2 key from a stem (`{date}-{HHMMSS}`). The date is embedded in
- * the stem, so edit/delete tools can address a file by stem alone.
- */
+/** Reconstruct the full R2 key from a stem (`{date}-{HHMMSS}`); the date is embedded in it. */
 export function keyFromStem(type: EntryType, stem: string): string {
 	const match = stem.match(/^(\d{4}-\d{2}-\d{2})-\d{6}$/);
 	if (!match) {

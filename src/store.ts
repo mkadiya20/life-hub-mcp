@@ -6,7 +6,6 @@ import { deserialize, type EntryType, type NutritionEntry, serialize } from "./e
 
 const ENTRIES_PREFIX = "Trackers/Nutrition/entries";
 
-/** Write one entry file. Returns the key it was written to. */
 export async function putEntry(
 	bucket: R2Bucket,
 	key: string,
@@ -18,12 +17,11 @@ export async function putEntry(
 	return key;
 }
 
-/** Delete one entry file by key. */
 export async function deleteEntry(bucket: R2Bucket, key: string): Promise<void> {
 	await bucket.delete(key);
 }
 
-/** Load one entry file by key, or null if absent. */
+/** Returns null if the key is absent. */
 export async function getEntry(bucket: R2Bucket, key: string): Promise<NutritionEntry | null> {
 	const object = await bucket.get(key);
 	if (!object) {
@@ -32,12 +30,8 @@ export async function getEntry(bucket: R2Bucket, key: string): Promise<Nutrition
 	return deserialize(await object.text());
 }
 
-/**
- * List entries whose logical date falls in [startDate, endDate] inclusive.
- *
- * Keys are `.../entries/{date}/{stem}.md`, so the date sorts lexically and we can
- * prefix-list per day rather than scan the whole bucket.
- */
+/** Entries with a logical date in [startDate, endDate] inclusive. The date sorts lexically
+ * in the key, so this prefix-lists rather than scanning the whole bucket. */
 export async function listEntries(
 	bucket: R2Bucket,
 	startDate: string,

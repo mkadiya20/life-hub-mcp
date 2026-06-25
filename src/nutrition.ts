@@ -1,7 +1,6 @@
 /**
- * Nutrition adapter: the typed body for log_meal. Validates LLM-supplied items,
- * sums entry totals, and builds the NutritionBody. Future entry types add a
- * sibling adapter; the envelope/store/read tools stay generic.
+ * Nutrition adapter: validates log_meal input and derives entry totals from items.
+ * Future entry types add a sibling adapter; the envelope and read tools stay generic.
  */
 import { z } from "zod";
 import type { NutritionBody, NutritionEntry } from "./entry";
