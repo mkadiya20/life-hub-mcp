@@ -79,9 +79,3 @@ export function logicalTimeStamp(instant: Date = new Date()): string {
 	const wall = toTorontoWallClock(instant);
 	return `${pad2(wall.hour)}${pad2(wall.minute)}${pad2(wall.second)}`;
 }
-
-/** Filename stem / idempotency key for an instant: `{logical_date}-{HHMMSS}`. */
-export function entryStamp(instant: Date = new Date()): { date: string; stem: string } {
-	const date = logicalDate(instant);
-	return { date, stem: `${date}-${logicalTimeStamp(instant)}` };
-}
